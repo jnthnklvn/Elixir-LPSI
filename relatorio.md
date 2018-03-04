@@ -71,11 +71,9 @@
 
   * A função raise cria um erro com a mensagem passada como parâmetro, daí o try-rescue imprime a concatenação das mensagens de erro, criando assim a trilha.
 
-
 ## Declaração de tipos
 
   * Elixir possui uma tipagem forte e dinâmica, e não aceita declaração de tipos, como é o caso de Python.
-
 ```
   x = "String"
   IO.puts x # “String”
@@ -86,48 +84,37 @@
   x^ = "String"
   IO.puts x # true
 ```
-
   * No exemplo acima não só é  possível ver que uma variável pode ter sua referência mudada, como também pode ser para outro tipo. No último caso o “^” depois da variável, diz que se já houver uma referência naquela variável, ela permanece com  a mesma referência.
-
 
 ## Modificabilidade
 
   * Não dá pra declarar variáveis como constantes, por isso alguns programadores utilizam alguns métodos alternativos como o de criar uma função que retorna um valor. Um exemplo de uma dessas funções pode ser visto abaixo:
-
 ```
-defmodule Exemplo do
-  def minha_const, do: 10
-end
+  defmodule Exemplo do
+    def minha_const, do: 10
+  end
 ```
-
 ## Sintaxe, Semântica e Léxico
 
   * Elixir suporta os operadores básicos +, -, * e /. É importante ressaltar que / sempre retornará um número ponto flutuante, veja:
-
 ```
   x = 1 + 3 # x = 4 (int)
   x = x * 2 # x = 8 (int)
   x = x / 2 # x = 4.0 (float)
   x = x - 4 # x = 0.0 (float)
 ```
-
   * Caso seja preciso realizar divisões e manter partes inteiras, existem duas funcionalidades para isso div e rem, a parte inteira da divisão e o resto, respectivamente.
-
 ```
 x = div(8, 2) # 4
 x = rem(x, 3) # 1
 ```
-
   * Os operadores booleanos também  são os comuns ||, &&, e !. Mas, temos 3 funcionalidades a mais and, or e not, os quais é necessário um booleano como argumento da esquerda.
-
 ```
   true and 42 # true
   42 && true # true
   42 and true # false
 ```
-
   * Elixir vem com todos os operadores de comparação que estamos acostumados a usar: ==, !=, ===, !==, <=, >=, < e >. Contudo traz duas a mais, veja a diferença no trecho abaixo:
-
 ```
   2 == 2.0 # true
   2 !== 2.0 # true
@@ -137,7 +124,6 @@ x = rem(x, 3) # 1
   * A inclusão de mais um “=” é para comparações de tipo e valor.
 
   * Elixir permite que criemos alguns códigos com a mesma semântica e diferente sintaxe. Entretanto, oficialmente as diferentes sintaxe são  recomendadas a serem usadas em casos distintos para melhorar legibilidade, assim como a indentação. Abaixo temos um exemplo:
-
 ```
   x = true
   if (x==true), do: IO.puts "Verdadeiro"
@@ -146,15 +132,12 @@ x = rem(x, 3) # 1
     IO.puts "Verdadeiro"
   end
 ```
-
   * No trecho acima, as duas condições fazem a mesma coisa, porém o Estilo Elixir define que o primeiro deve ser usado apenas quando houver 1 instrução, caso haja mais que uma a segunda forma deve ser adotada. Nesse caso o segundo caso não seria recomendável.
-
 ```
   teste(teste1(teste2(teste3(teste4()))))
   teste4() |> teste3() |> teste2() |> teste1() |> teste()
   teste4 |> teste3 |> teste2 |> teste1 |> teste
 ```
-
   * Nesse outro caso a semântica também é a mesma, porém o uso da primeira sintaxe é desaconselhável, o da terceira até o compilador te “repreende” - o compilador tem alertas para alguns desvios comuns que causam dano à legibilidade - e o segundo é o recomendável. Tanto o segundo quanto o terceiro utilizam o operador pipe, ele consiste no encadeamento de funções (é como o “.” em Haskell), onde o resultado da chamada da esquerda é passado como parâmetro para a função a direita.
 
   * A build tool de Elixir (Mix), na hora da compilação, faz primeiro a análise léxica verificando as variáveis e átomos e o encoding do código, se houver algum caractere não pertencente ao Unicode ou algum átomo ou variável fora de contexto, ele mostra um erro e o caractere corresponde.
@@ -170,7 +153,6 @@ x = rem(x, 3) # 1
 ## Checagem e equivalência de tipos
 
    * Como a linguagem  é fortemente tipada, a Análise Estática (AE) do programa em tempo de compilação determina se há violações na estrutura de tipos.         Se uma função é definida (implícita ou explicitamente) com um parâmetro do tipo T e houver chamadas com parâmetros diferentes de T no programa, um erro de compilação será apresentado.
-
 ```
   defmodule Teste2 do
     def teste(lista), do: for x <- lista, do: x*x
@@ -179,14 +161,11 @@ x = rem(x, 3) # 1
   IO.puts(Teste2.teste([])) # imprimi uma lista vazia
   IO.puts(Teste2.teste(1)) # Enumerable not implemented for 1
 ```
-
   * Contudo, é possível fazer operações entre alguns tipos diferentes, não só operações como também procedures como o de conversão de alguns tipos, vide exemplo:
-
 ```
   s = "5" # String
   x = String.to_integer(s) # int
 ```
-
 ## Contextos, Vínculos, Escopo e Declarações
 
   * Como já mencionados, brevemente, antes Elixir possui escopos estáticos e não dá pra alterar ou acessar uma variável fora de contexto, o que se pode fazer é receber uma cópia da variável passando ela como parâmetro de uma função.
@@ -196,27 +175,20 @@ x = rem(x, 3) # 1
 ## Abstração de Funções e Ordem das Funções
 
   * Como Elixir é uma linguagem funcional e promove o desacoplamento de códigos, abstrações são implementadas com módulos ao invés de classes. E diferentemente das linguagens OO são chamadas as funções de módulos e não de objetos. Exemplo:
-
 ```
-String.upcase("uma string")
+  String.upcase("uma string")
 ```
-
   * E como foi mostrado anteriormente os dados são imutáveis em Elixir, sendo assim temos que atribuir a referência retornada da função à uma variável.
 
   * Elixir suporta funções de alta ordem, em que uma função pode ser passada como argumento de outra. Também suporta compreensão de listas.
 
-
 ## Estratégias de Avaliação (Lazy, Eager)
-
 
 ## Tipos de Variáveis
 
-
 ## Tempo de Vida das Variáveis
 
-
 ## Gerenciamento de memória
-
 
 ## Persistência de Dados
 
@@ -239,7 +211,6 @@ String.upcase("uma string")
   * Elixir trata exceções em blocos try do / rescue
 
 ## Tratamento de eventos
-
 
 ## Concorrência[a][b]
 
