@@ -32,7 +32,7 @@
   muda = Mutacao.mutar muda
   IO.puts muda # E agora, 0 ou 1?
 ```
-  * Os valores que são imprimidos na tela, no caso acima, são 0, 1 e 0. Isso se dá porque em Elixir uma variável não pode ter sua referência trocada fora do escopo no qual foi declarada, e somente na última, quando recebe o retorno da função, a referência muda, pois as variáveis podem ter suas referências mudadas dentro de seu contexto, podendo inclusive receber referência a um outro tipo diferente do atual.
+  * Os valores que são imprimidos na tela, no caso acima, são 0, 1, 0 e 0. Isso se dá porque em Elixir uma variável não pode ter sua referência trocada fora do escopo no qual foi declarada, e somente na última, quando recebe o retorno da função, a referência muda, pois as variáveis podem ter suas referências mudadas dentro de seu contexto, podendo inclusive receber referência a um outro tipo diferente do atual.
 
 ## Tipos de dados Primitivos
 
