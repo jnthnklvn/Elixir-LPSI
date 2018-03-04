@@ -171,6 +171,16 @@ x = rem(x, 3) # 1
   * Como já mencionados, brevemente, antes Elixir possui escopos estáticos e não dá pra alterar ou acessar uma variável fora de contexto, o que se pode fazer é receber uma cópia da variável passando ela como parâmetro de uma função.
 
  * As declarações são feitas a partir do operador de Pattern Matching (=).
+ 
+  * As definições são feitas em funções, structs e módulos a partir dos Atomos defmodule, defstruct e def.
+  
+  |**Identificador/Symbol**|        **Entidade**       	|**Tempo de vínculo**|
+  |:---------------------:	|:-------------------------:	|:-----------------:	|
+  |           *           	| Operação de Multiplicação 	|      Projeto      	|
+  |        Variável       	|            Tipo           	|      Execução     	|
+  |         Função        	|      Código da função     	|      Ligação      	|
+  |    Variável Global    	|          Memória          	| Carga do Programa 	|
+  |     Variável Local    	|          Memória          	|   Execução Local  	|
 
 ## Abstração de Funções e Ordem das Funções
 
