@@ -227,7 +227,6 @@ x = rem(x, 3) # 1
   * Em Elixir, não há o polimorfismo ou a herança que vemos nas linguagens OO tradicionais. O meio que a linguagem encontrou para alcançar o polimorfismo foi o dos protocolos, ela já vem com um número de protocolos incorporados, por exemplo String.Chars que contém a função to_string. Além disso, protocolos adicionais podem ser implementados ou baixados, assim como as bibliotecas.
   
   * Já a herança, o que chega mais perto disso é o macro *use*. Ele é parecido com o macro import, porém ele dá a opção de editar o que está sendo importado, na pratica ele cria uma cópia do módulo importado e faz as "modificações".
-  
   ```
   defmodule Hi do
     defmacro __using__(opts) do
