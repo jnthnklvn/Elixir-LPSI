@@ -3,10 +3,10 @@
   * Elixir é uma linguagem dinâmica e funcional projetada para construir aplicações escaláveis e de fácil manutenção, baseada em Erlang, roda na Virtual Machine (VM) da mesma (BEAM).
 
 ## Paradigmas
-  * Elixir é uma linguagem multiparadigma, com conceitos de Orientação a Objetos (OO), Funcional e Concorrente.
+  * Suporta multiparadigma, com conceitos de Orientação a Objetos (OO), Funcional e Concorrente.
 
 ## Simplicidade geral
-  * Elixir possui uma multiplicidade de recursos que possibilita haver mais de uma maneira de realizar uma operação e certa liberdade com relação a indentação. Contudo, os desenvolvedores da linguagem promovem bastante o chamado Estilo Elixir, estilo esse que segue padrões que visam melhorar a legibilidade. Além disso, o compilador faz alguns alertas quanto a ambiguidades que prejudicam a legibilidade, exemplo trecho de código abaixo:
+  * Possui uma multiplicidade de recursos que possibilita haver mais de uma maneira de realizar uma operação e certa liberdade com relação a indentação. Contudo, os desenvolvedores da linguagem promovem bastante o chamado Estilo Elixir, estilo esse que segue padrões que visam melhorar a legibilidade. Além disso, o compilador faz alguns alertas quanto a ambiguidades que prejudicam a legibilidade, exemplo trecho de código abaixo:
 ```
   # verifica se a string termina com o arg
   "elixir" |> String.ends_with? "ixir" # compiler ambiguidade
