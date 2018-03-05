@@ -192,11 +192,13 @@ x = rem(x, 3) # 1
 
   * Elixir suporta funções de alta ordem, em que uma função pode ser passada como argumento de outra. Também suporta compreensão de listas.
 
-## Estratégias de Avaliação (Lazy, Eager)
-
-## Tipos de Variáveis
-
-## Gerenciamento de memória
+## Estratégias de Avaliação Preguiçosa
+  * Assim como Haskell, também temos a avaliação preguiçosa em Elixir, o exemplo abaixo utiliza os módulos Enum e Stream
+  ```
+  x = [1..5] # x = [1..5]
+  Enum.filter(1..1000000000, &(rem(&1, 3) == 0 || rem(&1, 5) == 0)) |> Enum.take 5
+  Stream.filter(1..1000000000, &(rem(&1, 3) == 0 || rem(&1, 5) == 0)) |> Enum.take 5
+  ```
 
 ## Persistência de Dados
 
@@ -207,16 +209,27 @@ x = rem(x, 3) # 1
     * Também é possível utilizar o Erlang Term Storage (ETS) que persiste dados através de tabelas.
 
 ## Correspondência e Passagem de Parâmetros
+  * Em Elixir a passagem os parâmetros de uma função são lidos na ordem em que estão dispostos, se a ordem estiver diferente da esperada o compilador apresenta um erro. 
 
 ## Polimorfismo (Coerção, Sobrecarga, Paramétrico)
 
+  * Não existe coerção ou sobrecarga em Elixir, os parâmetros das funções só aceitam o tipo definido e a criação de novas funções com o mesmo nome não caracteriza sobrecarga pois são funções diferentes (que serão acessadas na ordem independente do tipo do parâmetro), embora tenham o mesmo nome. E justamente por conta da tipagem Polimorfismo Paramétrico também não é aceitavél.
+  ```
+  defmodule Teste do
+    def teste(1), do: 2
+    def teste(x), do: x*2 + teste(x-1)
+    def teste([head|tail]), do: tail ++ head
+  end
+  ```
+  * No caso acima, diferente de Java, se uma lista é passada como parâmetro da função teste, ela da erro, pois entra na primeira possibilidade e da erro de compatibilidade.
+  
 ## Orientação a objetos (OO) - Herança e polimorfismo
   
   * Em Elixir, não há o polimorfismo ou a herança que vemos nas linguagens OO tradicionais. O meio que a linguagem encontrou para alcançar o polimorfismo foi o dos protocolos, ela já vem com um número de protocolos incorporados, por exemplo String.Chars que contém a função to_string. Além disso, protocolos adicionais podem ser implementados ou baixados, assim como as bibliotecas.
   
   * Já a herança, o que chega mais perto disso é o macro *use*. Ele é parecido com o macro import, porém ele dá a opção de editar o que está sendo importado, na pratica ele cria uma cópia do módulo importado e faz as "modificações".
   
-  ``
+  ```
   defmodule Hi do
     defmacro __using__(opts) do
       greeting = Keyword.get(opts, :greeting, "Hi")
@@ -226,19 +239,19 @@ x = rem(x, 3) # 1
       end
     end
   end
-  ``
+  ```
   * No módulo acima é definido um macro com __using__(opts) que permite a "modificação" a seguir.
-  ``
+  ```
     defmodule Example do
       use Hi, greeting: "Olah"
     end
   
     IO.puts(Example.hello("Kelvin")) # "Olah, Kelvin"
-  ``
+  ```
   
 ## Concorrência
 
-  * Implementação de algoritmo de concorrência Produtor-Consumidor
+  * Implementação de algoritmo de concorrência Produtor-ProdutorConsumidor-Consumidor.
   ```
   defmodule Producer do
     use GenStage
@@ -255,6 +268,7 @@ x = rem(x, 3) # 1
     end
   end
   ```
+  * O Produtor produz uma lista de inteiros de acordo com a demanda dos consumidores e a envia para o ProdutorConsumidor.
   ```
   defmodule ProducerConsumer do
     use GenStage
@@ -274,6 +288,7 @@ x = rem(x, 3) # 1
     end
   end
   ```
+  * O ProdutorConsumidor filtra a lista de inteiros recebida, mantendo apenas os pares e a envia para os Consumidores.
   ```
   defmodule Consumer do
     use GenStage
@@ -289,6 +304,7 @@ x = rem(x, 3) # 1
     end
   end
   ```
+  * O Consumidor imprimi sua identificação, os elementos da lista e seu *atom* até esvaziar a lista e poder demandar novamente.
   ```
   defmodule GenstageExample.Application do
     use Application
@@ -309,6 +325,8 @@ x = rem(x, 3) # 1
     end
   end
   ```
+  * Aplicação que cria os Produtores e Consumidores, define o tipo de alternancia e inicia o programa.
+   
 ## Referências
   * PROUNTZOS, Dimitrios; MANEVICH, Roman; PINGALI, Keshav. Elixir: A system for synthesizing concurrent graph programs. ACM SIGPLAN Notices, v. 47, n. 10, p. 375-394, 2012.
   * https://elixirschool.com/pt/
