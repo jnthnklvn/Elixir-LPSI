@@ -196,8 +196,6 @@ x = rem(x, 3) # 1
 
 ## Tipos de Variáveis
 
-## Tempo de Vida das Variáveis
-
 ## Gerenciamento de memória
 
 ## Persistência de Dados
@@ -212,16 +210,32 @@ x = rem(x, 3) # 1
 
 ## Polimorfismo (Coerção, Sobrecarga, Paramétrico)
 
-## Abstração de dados – encapsulamento de informação, tipos abstratos de dados
+## Orientação a objetos (OO) - Herança e polimorfismo
+  
+  * Em Elixir, não há o polimorfismo ou a herança que vemos nas linguagens OO tradicionais. O meio que a linguagem encontrou para alcançar o polimorfismo foi o dos protocolos, ela já vem com um número de protocolos incorporados, por exemplo String.Chars que contém a função to_string. Além disso, protocolos adicionais podem ser implementados ou baixados, assim como as bibliotecas.
+  
+  * Já a herança, o que chega mais perto disso é o macro *use*. Ele é parecido com o macro import, porém ele dá a opção de editar o que está sendo importado, na pratica ele cria uma cópia do módulo importado e faz as "modificações".
+  
+  ``
+  defmodule Hi do
+    defmacro __using__(opts) do
+      greeting = Keyword.get(opts, :greeting, "Hi")
 
-## Orientação a objetos – Herança e polimorfismo de inclusão
-
-## Tratamento de exceções
-
-  * Elixir trata exceções em blocos try do / rescue
-
-## Tratamento de eventos
-
+      quote do
+        def hello(name), do: unquote(greeting) <> ", " <> name
+      end
+    end
+  end
+  ``
+  * No módulo acima é definido um macro com __using__(opts) que permite a "modificação" a seguir.
+  ``
+    defmodule Example do
+      use Hi, greeting: "Olah"
+    end
+  
+    IO.puts(Example.hello("Kelvin")) # "Olah, Kelvin"
+  ``
+  
 ## Concorrência
 
   * Implementação de algoritmo de concorrência Produtor-Consumidor
@@ -297,5 +311,5 @@ x = rem(x, 3) # 1
   ```
 ## Referências
   * PROUNTZOS, Dimitrios; MANEVICH, Roman; PINGALI, Keshav. Elixir: A system for synthesizing concurrent graph programs. ACM SIGPLAN Notices, v. 47, n. 10, p. 375-394, 2012.
-  * [a]https://elixirschool.com/pt/lessons/advanced/concurrency/#processos
-  * [b]https://hexdocs.pm/elixir/Process.html#content
+  * https://elixirschool.com/pt/
+  * https://hexdocs.pm/elixir/
