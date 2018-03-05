@@ -222,8 +222,79 @@ x = rem(x, 3) # 1
 
 ## Tratamento de eventos
 
-## Concorrência[a][b]
+## Concorrência
 
+  * Implementação de algoritmo de concorrência Produtor-Consumidor
+  ```
+  defmodule Producer do
+    use GenStage
+
+    def start_link(inicio) do
+      GenStage.start_link(Producer, inicio, name: Producer)
+    end
+
+    def init(cont), do: {:producer, cont}
+
+    def handle_demand(demanda, estado) do
+      eventos = Enum.to_list(estado..(estado + demanda - 1))
+      {:noreply, eventos, estado + demanda}
+    end
+  end
+  ```
+  ```
+  defmodule ProducerConsumer do
+    use GenStage
+
+    require Integer
+
+    def start_link, do: GenStage.start_link(__MODULE__, :ok, name: __MODULE__)
+
+    def init(estado), do: {:producer_consumer, estado, subscribe_to: [Producer]}
+
+    def handle_events(eventos, _from, estado) do
+      num =
+        eventos
+        |> Enum.filter(&Integer.is_even/1)
+
+      {:noreply, num, estado}
+    end
+  end
+  ```
+  ```
+  defmodule Consumer do
+    use GenStage
+
+    def start_link, do: GenStage.start_link(Consumer, :consumer)
+
+    def init(estado), do: {:consumer, estado, subscribe_to: [ProducerConsumer]}
+
+    def handle_events(events, _from, estado) do
+      for event <- events, do: IO.inspect({self(), event, estado})
+
+      {:noreply, [], estado}
+    end
+  end
+  ```
+  ```
+  defmodule GenstageExample.Application do
+    use Application
+
+    def start(_type, _args) do
+      import Supervisor.Spec, warn: false
+
+      chineseChildren = [
+        worker(Producer, [0]),
+        worker(ProducerConsumer, []),
+        worker(Consumer, [], id: 1),
+        worker(Consumer, [], id: 2),
+        worker(Consumer, [], id: 3)
+      ]
+
+      opts = [strategy: :one_for_one, name: GenstageExample.Supervisor]
+      Supervisor.start_link(chineseChildren, opts)
+    end
+  end
+  ```
 ## Referências
   * PROUNTZOS, Dimitrios; MANEVICH, Roman; PINGALI, Keshav. Elixir: A system for synthesizing concurrent graph programs. ACM SIGPLAN Notices, v. 47, n. 10, p. 375-394, 2012.
   * [a]https://elixirschool.com/pt/lessons/advanced/concurrency/#processos
